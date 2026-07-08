@@ -28,13 +28,11 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
-    // Bean PasswordEncoder WAJIB ada agar AuthServiceImpl bisa melakukan hash password
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Bean AuthenticationManager WAJIB ada agar AuthServiceImpl bisa memvalidasi login
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
