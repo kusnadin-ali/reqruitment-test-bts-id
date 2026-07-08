@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:16
+    container_name: bts-db-product
+    environment:
+      POSTGRES_DB: bts-db-product
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: inipass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: product-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bts-db-product
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: inipass
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_SECRET: "my-super-secret-key-for-product-service-app"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
